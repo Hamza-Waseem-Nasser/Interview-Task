@@ -105,13 +105,26 @@ The employee asking the question will be identified by their employee_id. Always
 
 # ── Helpers: clean LLM output and parse text-based tool calls ────────────────
 
-def _clean_response(text: str) -> str:
+def _clean_response(text: str | list) -> str:
     """
     Clean LLM response text:
-    1. Remove <think>...</think> blocks (qwen3 internal reasoning)
-    2. Remove raw JSON tool-call blobs the LLM sometimes outputs as text
-    3. Strip whitespace
+    1. Handle LangChain list contents (Gemini often returns list of blocks)
+    2. Remove <think>...</think> blocks (qwen3 internal reasoning)
+    3. Remove raw JSON tool-call blobs the LLM sometimes outputs as text
+    4. Strip whitespace
     """
+    # LangChain Google GenAI sometimes returns content as a list of dictionaries
+    if isinstance(text, list):
+        text_parts = []
+        for block in text:
+            if isinstance(block, str):
+                text_parts.append(block)
+            elif isinstance(block, dict) and "text" in block:
+                text_parts.append(block["text"])
+        text = " ".join(text_parts)
+    elif not isinstance(text, str):
+        text = str(text)
+
     # Remove <think> blocks (qwen3 internal reasoning)
     text = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL)
 
@@ -356,6 +369,40 @@ async def ask_agent(
     # Invoke the graph
     logger.info(f"Processing question from {employee_id}: {question[:100]}...")
     result = await graph.ainvoke({"messages": messages})
+
+    # --- RAW LOGGING FOR INVESTIGATION ---
+    print("\n" + "="*60)
+    print("🔍 RAW INVESTIGATION LOGS")
+    print("="*60)
+    for i, msg in enumerate(result["messages"]):
+        # Skip the massive system prompt for cleaner logs
+        if type(msg).__name__ == "SystemMessage":
+            print(f"\n[{i}] SystemMessage (Hidden to save space)")
+            continue
+            
+        print(f"\n[{i}] TYPE: {type(msg).__name__}")
+        
+        # Log tool calls if AI message
+        if hasattr(msg, "tool_calls") and msg.tool_calls:
+            print(f"🔧 LLM GENERATED TOOL CALLS:\n{json.dumps(msg.tool_calls, indent=2)}")
+            
+        # Log content
+        content = getattr(msg, "content", str(msg))
+        if content:
+            # truncate long content slightly for readability
+            if len(content) > 1000:
+                print(f"📄 CONTENT:\n{content[:1000]}... [TRUNCATED]")
+            else:
+                print(f"📄 CONTENT:\n{content}")
+            
+        # Log manual fallback tools
+        if hasattr(msg, "_manual_tools_called") and msg._manual_tools_called:
+            print(f"⚠️ MANUAL FALLBACK TOOLS TRIGGERED: {msg._manual_tools_called}")
+            
+        # Log Tool Message specifics
+        if type(msg).__name__ == "ToolMessage":
+            print(f"🛠️  TOOL EXECUTED: {getattr(msg, 'name', 'unknown')}")
+    print("="*60 + "\n")
 
     # Extract the final answer
     all_messages = result["messages"]

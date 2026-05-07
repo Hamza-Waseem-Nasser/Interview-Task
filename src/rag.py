@@ -113,6 +113,8 @@ def search_policies(query: str) -> str:
 
     # Rewrite the query for better vector search
     optimized_query = _rewrite_query(query)
+    print(f"\n✨ [RAG MAGIC] Raw Query: '{query}'")
+    print(f"✨ [RAG MAGIC] Rewritten Optimized Query: '{optimized_query}'\n")
 
     # E5 embedding format: prefix queries with "query: "
     # This tells the model this is a search query, not a document

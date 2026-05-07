@@ -1,14 +1,15 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { Bot, User, MessageSquarePlus, CalendarDays, Home, TrendingUp, GraduationCap, Send, Sparkles } from 'lucide-react'
 import './App.css'
 
 /* ── Constants ────────────────────────────────────────────────────────────── */
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 const SUGGESTIONS = [
-  { icon: '📅', text: 'How many leave days do I have left?' },
-  { icon: '🏠', text: 'Am I eligible for remote work?' },
-  { icon: '📊', text: 'What salary increase can I expect based on my rating?' },
-  { icon: '📚', text: 'How much training budget do I have remaining?' },
+  { icon: CalendarDays, text: 'How many leave days do I have left?' },
+  { icon: Home, text: 'Am I eligible for remote work?' },
+  { icon: TrendingUp, text: 'What salary increase can I expect based on my rating?' },
+  { icon: GraduationCap, text: 'How much training budget do I have remaining?' },
 ]
 
 const SOURCE_LABELS = {
@@ -124,7 +125,7 @@ function App() {
       <aside className="sidebar">
         <div className="sidebar-header">
           <div className="sidebar-logo">
-            <div className="sidebar-logo-icon">🤖</div>
+            <div className="sidebar-logo-icon"><Bot size={22} /></div>
             <h1>HR Assistant</h1>
           </div>
           <div className="sidebar-subtitle">AlNoor Technologies</div>
@@ -181,7 +182,7 @@ function App() {
 
         <div className="sidebar-footer">
           <button className="btn-new-chat" onClick={startNewChat}>
-            ✨ New Conversation
+            <MessageSquarePlus size={16} /> New Conversation
           </button>
         </div>
       </aside>
@@ -203,7 +204,7 @@ function App() {
           {messages.length === 0 && !isLoading ? (
             /* ── Welcome Screen ────────────────────────────────────────── */
             <div className="welcome">
-              <div className="welcome-icon">🤖</div>
+              <div className="welcome-icon"><Bot size={40} /></div>
               <h2>HR AI Assistant</h2>
               <p>
                 Ask me about company policies, your leave balance,
@@ -216,7 +217,7 @@ function App() {
                     className="suggestion-card"
                     onClick={() => sendMessage(s.text)}
                   >
-                    <div className="suggestion-card-icon">{s.icon}</div>
+                    <div className="suggestion-card-icon"><s.icon size={20} /></div>
                     {s.text}
                   </button>
                 ))}
@@ -228,7 +229,7 @@ function App() {
               {messages.map((msg, i) => (
                 <div key={i} className={`message ${msg.role}`}>
                   <div className="message-avatar">
-                    {msg.role === 'user' ? '👤' : '🤖'}
+                    {msg.role === 'user' ? <User size={18} /> : <Bot size={18} />}
                   </div>
                   <div className="message-content">
                     <div
@@ -265,7 +266,7 @@ function App() {
               {/* Typing indicator */}
               {isLoading && (
                 <div className="message assistant">
-                  <div className="message-avatar">🤖</div>
+                  <div className="message-avatar"><Bot size={18} /></div>
                   <div className="message-content">
                     <div className="message-bubble">
                       <div className="typing-indicator">
@@ -302,7 +303,7 @@ function App() {
               disabled={isLoading || !input.trim()}
               title="Send message"
             >
-              ➤
+              <Send size={18} />
             </button>
           </div>
           <div className="chat-hint">

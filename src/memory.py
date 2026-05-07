@@ -1,5 +1,5 @@
 """
-In-memory session memory for the HR AI Assistant (bonus feature).
+In-memory session memory for the HR AI Assistant.
 
 Stores conversation history per session_id so the agent can maintain
 context across multiple turns within a conversation.
