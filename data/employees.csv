@@ -1,0 +1,16 @@
+employee_id,full_name,department,grade_level,hire_date,annual_leave_days,leave_taken,leave_balance,remote_model,manager,performance_rating_2024,training_budget_sar,training_spent_sar,employment_status
+EMP001,Sara Al-Rashidi,Data & AI,L5,2019-03-10,30,12,18,Hybrid Flexible,Khalid Mansour,4,12000,7500,Active
+EMP002,Omar Benali,Data & AI,L3,2022-07-01,25,8,17,Hybrid Standard,Khalid Mansour,3,6000,2000,Active
+EMP003,Lina Haddad,Engineering,L6,2017-11-20,30,22,8,Hybrid Flexible,Rania Khalil,5,12000,11800,Active
+EMP004,Yusuf Al-Tamimi,Engineering,L2,2024-01-15,21,5,16,Office First,Rania Khalil,3,3000,0,Active
+EMP005,Nour Farouk,HR,L4,2021-05-03,25,10,15,Hybrid Standard,Dina Al-Sayed,4,6000,4500,Active
+EMP006,Faisal Al-Zahrani,Product,L7,2015-08-12,35,20,15,Hybrid Flexible,Ahmad Al-Ghamdi,4,20000,15000,Active
+EMP007,Hana Mustafa,Engineering,L3,2023-02-20,25,3,22,Hybrid Standard,Rania Khalil,3,6000,1200,Active
+EMP008,Tariq Idrissi,Data & AI,L4,2020-09-09,25,15,10,Hybrid Standard,Khalid Mansour,2,6000,0,PIP
+EMP009,Maya Al-Otaibi,Sales,L2,2023-11-01,21,0,21,Office First,Salma Nasser,3,3000,0,Active
+EMP010,Karim Bouazizi,Engineering,L6,2016-04-18,30,28,2,Fully Remote,Rania Khalil,5,12000,12000,Active
+EMP011,Dina Al-Sayed,HR,L7,2013-06-30,35,14,21,Hybrid Flexible,Ahmad Al-Ghamdi,4,20000,9000,Active
+EMP012,Rania Khalil,Engineering,L8,2011-01-05,35,7,28,Hybrid Flexible,Ahmad Al-Ghamdi,5,20000,18500,Active
+EMP013,Sami Taha,Data & AI,L2,2024-08-01,21,2,19,Office First,Khalid Mansour,3,3000,800,Probation
+EMP014,Leila Mansouri,Product,L5,2018-10-22,30,11,19,Hybrid Flexible,Faisal Al-Zahrani,4,12000,6000,Active
+EMP015,Khalid Mansour,Data & AI,L7,2014-03-15,35,16,19,Hybrid Flexible,Ahmad Al-Ghamdi,5,20000,17000,Active

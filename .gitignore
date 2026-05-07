@@ -1,0 +1,26 @@
+# Dependencies
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment
+.env
+
+# Vector store (auto-generated)
+chroma_db/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Frontend build output
+frontend/node_modules/
+frontend/dist/
+
+# Original task files (not needed in repo)
+TheTask/
