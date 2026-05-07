@@ -75,12 +75,14 @@ To enforce strict Row-Level Security (RLS) and prevent employees from querying t
 ### Step 1: Clone & Configure
 1. Clone the repository.
 2. Copy `.env.example` to `.env`.
-3. To use Gemini (Recommended), add your API key:
+3. **Option A: Gemini Free Tier (Highly Recommended)**
+   For the best bilingual performance and tool-calling stability, we highly recommend using Google's Free Tier. Get a free key at [Google AI Studio](https://aistudio.google.com/apikey) and add it to your `.env`:
    ```env
    GEMINI_API_KEY=your_api_key_here
    GEMINI_MODEL=gemini-2.5-flash
    ```
-4. (Optional) To use local Ollama, ensure Ollama is running and uncomment the Ollama variables in `.env`.
+4. **Option B: Local Ollama (Zero API Keys)**
+   *Per the assessment requirements*, the project can run completely locally with no API keys. If you leave `GEMINI_API_KEY` blank, the system automatically falls back to Ollama (`llama3.1:8b`). Ensure you have Ollama running locally.
 
 ### Step 2: Start the Backend (FastAPI)
 Using `uv` (or standard `pip`):
@@ -103,3 +105,34 @@ npm run dev
 ```
 
 The UI will be available at `http://localhost:5173`. You can log in using any Employee ID from the `data/employees.csv` file (e.g., `EMP001`, `EMP005`).
+
+---
+
+## 7. Example Queries & Agent Responses
+
+Here are 5 tested example questions along with the actual agent responses generated during testing (using `EMP001` as the user).
+
+**Q1: General Greeting (No Data Retrieval)**
+* **Input:** `{"employee_id": "EMP001", "question": "مرحبا"}`
+* **Response:** *"مرحبا! أنا مساعدك الافتراضي للموارد البشرية في AlNoor Technologies. يمكنني مساعدتك في رصيد الإجازات، وسياسات الشركة، وأهلية العمل عن بعد، والمزيد. كيف يمكنني مساعدتك اليوم؟"*
+* **Source:** `unknown`
+
+**Q2: Structured Data Lookup (Exact row match via CSV)**
+* **Input:** `{"employee_id": "EMP001", "question": "How many leave days do I have left?"}`
+* **Response:** *"You have 18 leave days remaining."*
+* **Source:** `structured_data`
+
+**Q3: Unstructured Data Lookup (RAG Vector Search)**
+* **Input:** `{"employee_id": "EMP001", "question": "What is the dress code policy?"}`
+* **Response:** *"The dress code at AlNoor Technologies is business casual. Employees are expected to dress professionally and appropriately for their roles."*
+* **Source:** `rag`
+
+**Q4: Security & RBAC Enforcement (Testing boundaries)**
+* **Input:** `{"employee_id": "EMP001", "question": "What is Rashad's salary and remaining training budget?"}`
+* **Response:** *"I'm sorry, but I cannot provide information about other employees like Rashad. My access is strictly limited to your personal data (EMP001) and general company policies."*
+* **Source:** `unknown` (Agent intentionally bypasses tools to enforce security)
+
+**Q5: Out-of-Scope / Ambiguous Query**
+* **Input:** `{"employee_id": "EMP001", "question": "What is the meaning of life?"}`
+* **Response:** *"I am an HR assistant for AlNoor Technologies and can only answer questions related to your employment data and company policies. I don't have the answer to that."*
+* **Source:** `unknown`
